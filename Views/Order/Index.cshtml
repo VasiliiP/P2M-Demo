@@ -1,0 +1,52 @@
+﻿@model PlayerViewModel
+
+<div class="container-fluid">
+	<form class="form-horizontal" asp-action="Index" method="POST">
+		<div class="row">
+			<h3>You have @Model.Points points</h3> 
+			<input asp-for="@Model.GlobalUid" type="hidden">
+			<input asp-for="@Model.PlayerId" type="hidden">
+			<input asp-for="@Model.Points" type="hidden">
+		</div>
+		<div class="row">
+				<table	class="table table-condensed">
+					<thead>
+						<tr>							
+							<td>Reference</td>
+							<td>Status</td>
+						</tr>
+					</thead>
+					@{string stateClass = null;}
+					@for (int i = 0; i < Model.Orders.Count; i++)
+						{
+							if (Model.Orders[i].IsDone)
+								{stateClass = "success";}
+							else
+								{stateClass = "info";}
+							<input asp-for="@Model.Orders[i].Id" type="hidden">
+							<input asp-for="@Model.Orders[i].IsDone" type="hidden">
+							<input asp-for="@Model.Orders[i].Player" type="hidden">
+							<tr class="@stateClass">								
+								<td>
+									@if (!string.IsNullOrEmpty(Model.Orders[i].Reference))
+									{
+										<input  asp-for="@Model.Orders[i].Reference" type="url" class="form-control input-sm" placeholder="http://www.instagram.com" readonly>
+									}
+									else
+									{
+										<input  asp-for="@Model.Orders[i].Reference" type="url" class="form-control input-sm" placeholder="http://www.instagram.com">
+									}
+								
+								</td>
+								<td>
+									@(Model.Orders[i].IsDone ? "Done!" : "In work")
+								</td>
+							</tr>
+						}
+				</table>
+		</div>
+		<div class="row">
+			<button type="submit" class="btn btn-default">Submit</button>
+		</div>
+	</form>
+</div>
